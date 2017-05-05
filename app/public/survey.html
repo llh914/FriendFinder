@@ -36,7 +36,7 @@
 	      	</select>
 
 	      	<h3><strong>Question 2</strong></h3>
-			<h4>You like to travel.</h4>
+			<h4>You have an active imagination.</h4>
 				<select class="form-control" id="q2">
 		 		<option value="" selected disabled>Select an Option</option>
 	            <option value="1">1 (Strongly Disagree)</option>
@@ -47,7 +47,7 @@
 	      	</select>
 
 	      	<h3><strong>Question 3</strong></h3>
-			<h4>You like to travel.</h4>
+			<h4>You prefer cats over dogs.</h4>
 				<select class="form-control" id="q3">
 		 		<option value="" selected disabled>Select an Option</option>
 	            <option value="1">1 (Strongly Disagree)</option>
@@ -58,7 +58,7 @@
 	      	</select>
 
 	      	<h3><strong>Question 4</strong></h3>
-			<h4>You like to travel.</h4>
+			<h4>You are spontaneous and don't like to plan ahead.</h4>
 				<select class="form-control" id="q4">
 		 		<option value="" selected disabled>Select an Option</option>
 	            <option value="1">1 (Strongly Disagree)</option>
@@ -69,7 +69,7 @@
 	      	</select>
 
 	      	<h3><strong>Question 5</strong></h3>
-			<h4>You like to travel.</h4>
+			<h4>You enjoy meeting new people.</h4>
 				<select class="form-control" id="q5">
 		 		<option value="" selected disabled>Select an Option</option>
 	            <option value="1">1 (Strongly Disagree)</option>
@@ -80,7 +80,7 @@
 	      	</select>
 
 	      	<h3><strong>Question 6</strong></h3>
-			<h4>You like to travel.</h4>
+			<h4>You work well under pressure.</h4>
 				<select class="form-control" id="q6">
 		 		<option value="" selected disabled>Select an Option</option>
 	            <option value="1">1 (Strongly Disagree)</option>
@@ -91,7 +91,7 @@
 	      	</select>
 
 	      	<h3><strong>Question 7</strong></h3>
-			<h4>You like to travel.</h4>
+			<h4>You would describe yourself as open-minded.</h4>
 				<select class="form-control" id="q7">
 		 		<option value="" selected disabled>Select an Option</option>
 	            <option value="1">1 (Strongly Disagree)</option>
@@ -102,7 +102,7 @@
 	      	</select>
 
 	      	<h3><strong>Question 8</strong></h3>
-			<h4>You like to travel.</h4>
+			<h4>You prefer working on a team over working alone.</h4>
 				<select class="form-control" id="q8">
 		 		<option value="" selected disabled>Select an Option</option>
 	            <option value="1">1 (Strongly Disagree)</option>
@@ -113,7 +113,7 @@
 	      	</select>
 
 	      	<h3><strong>Question 9</strong></h3>
-			<h4>You like to travel.</h4>
+			<h4>You try to avoid conflict at all cost.</h4>
 				<select class="form-control" id="q9">
 		 		<option value="" selected disabled>Select an Option</option>
 	            <option value="1">1 (Strongly Disagree)</option>
@@ -124,7 +124,7 @@
 	      	</select>
 
 	      	<h3><strong>Question 10</strong></h3>
-			<h4>You like to travel.</h4>
+			<h4>You are very curious and like exploring new things.</h4>
 				<select class="form-control" id="q10">
 		 		<option value="" selected disabled>Select an Option</option>
 	            <option value="1">1 (Strongly Disagree)</option>
@@ -143,9 +143,9 @@
 	    <footer>
 	    	<div class="container">
 	    		<p>
-	    		<a href="/api/friends">API Friends List </a>
+	    		<a href="/api/friends" target="_blank">API Friends List </a>
 	    		|
-	    		<a href="https://github.com/llh914/FriendFinder"> GitHub Repository</a>
+	    		<a href="https://github.com/llh914/FriendFinder" target="_blank"> GitHub Repository</a>
 	    		</p>
 			</div>
 		</footer>
@@ -170,7 +170,17 @@
 	<script type="text/javascript">
 		$("#submit-btn").on("click", function(event) {
 			event.preventDefault();
-			var newFriend = {
+			function validateForm() {
+				var isValid = true;
+				$(".form-control").each(function() {
+					if ($(this).val() === "" || $(this).val() === null) {
+						isValid = false;
+					}
+				});
+				return isValid;
+			}
+			if (validateForm() === true) {
+				var newFriend = {
 				name: $("#name").val().trim(),
 				photo: $("#photo").val().trim(),
 				scores: [
@@ -186,15 +196,17 @@
 					$("#q10").val()
 				]
 			};
-			console.log(newFriend);
 			 $.post("/api/friends", newFriend)
 	            .done(function(data) {
 	                $("#matchName").text(data.name);
 	                $("#matchImage").attr("src", data.photo);
+	                $("#matchModal").modal("toggle");
 	            });
+			} else {
+				alert("Please fill out all fields before submitting!")
+			}
+			return false;
 		});
-
-		//TODO Validation for form entries
 	</script>	
 </body>
 </html>
